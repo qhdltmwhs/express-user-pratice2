@@ -19,10 +19,8 @@ router.post('/register', async (req, res, next) => {
 router.post('/login',
     passport.authenticate('local', { session: false }),
     async (req, res, next) => {
-        const { username, password } = req.body;
         try {
-            const user = await userService.getUser(username, password);
-            const accessToken = userService.createToken(user);
+            const accessToken = userService.createToken(req.user);
             res.status(200).json({ token: accessToken });
         } catch (error) {
             next(error);
@@ -42,4 +40,3 @@ router.get('/profile',
 );
 
 export default router;
-
